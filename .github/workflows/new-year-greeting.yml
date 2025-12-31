@@ -1,0 +1,42 @@
+name: New Year Greeting
+
+on:
+  schedule:
+    - cron: '0 0 1 1 *'
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+    - name: Get current year
+      id: year
+      run: echo "YEAR=$(date +'%Y')" >> $GITHUB_OUTPUT
+
+    - name: Add new year greeting to readme
+      run: |
+        MARKER="HAPPY_NEW_YEAR_${{ steps.year.outputs.YEAR }}"
+        
+        if ! grep -q "$MARKER" README.md; then
+          echo "" >> README.md
+          echo "" >> README.md
+          echo "<!-- $MARKER -->" >> README.md
+          echo "\n## 🎉 Happy New Year ${{ steps.year.outputs.YEAR }}!!! 🎉" >> README.md
+          echo "_Wishing you all the best in ${{ steps.year.outputs.YEAR }}!_" >> README.md
+          echo "" >> README.md
+        else
+          echo "New Year ${{ steps.year.outputs.YEAR }} greeting already exists in README"
+        fi
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "oliwerx12@gmail.com"
+        git config --local user.name "${{ github.actor }}"
+        git add README.md
+        git diff --quiet && git diff --staged --quiet || (git commit -m "🎉 Add Happy New Year ${{ steps.year.outputs.YEAR }} greeting" && git push)
