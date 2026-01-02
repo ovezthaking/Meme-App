@@ -22,15 +22,11 @@ function highlightCheckedOption(e){
 
 function getMatchingCatsArray() {
     if (document.querySelector('input[type="radio"]:checked')) {
-        const checkedInput = document.querySelector('input[type="radio"]:checked').value
-        console.log(checkedInput)
+        const selectedEmotion = document.querySelector('input[type="radio"]:checked').value
+        
         const isGif = gifsOnly.checked
-        if(isGif){
-            console.log(isGif)
-        }
-        else{
-            console.log('isGif is false')
-        }
+        const catsMemes = catsData.filter(cat => cat.emotionTags.includes(selectedEmotion))
+        console.log(catsMemes)
     }
 }
 
