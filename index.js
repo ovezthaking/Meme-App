@@ -25,8 +25,8 @@ function getMatchingCatsArray() {
         const selectedEmotion = document.querySelector('input[type="radio"]:checked').value
         
         const isGif = gifsOnly.checked
-        const catsMemes = catsData.filter(cat => cat.emotionTags.includes(selectedEmotion))
-        console.log(catsMemes)
+        const matchingCatsArray = catsData.filter(cat => cat.emotionTags.includes(selectedEmotion))
+        console.log(matchingCatsArray)
     }
 }
 
